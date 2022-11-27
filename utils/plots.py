@@ -68,6 +68,13 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=3):
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
+def crop_one_box(x, outputImg, srcImg):
+    # cropped_img = srcImg[int(x[1]):int(x[3]), int(x[0]):int(x[2])]
+    outputImg[int(x[1]):int(x[3]), int(x[0]):int(x[2])] = srcImg[int(x[1]):int(x[3]), int(x[0]):int(x[2])]
+    # cv2.add(outputImg, cropped_img)
+
+
+
 def plot_one_box_PIL(box, img, color=None, label=None, line_thickness=None):
     img = Image.fromarray(img)
     draw = ImageDraw.Draw(img)

@@ -41,7 +41,7 @@ def bbox_rel(*xyxy):
 
 
 """Function to Draw Bounding boxes"""
-def draw_boxes(outputImg, srcImg, bbox, identities=None, categories=None, names=None,offset=(0, 0)):
+def draw_boxes(outputImg, srcImg, bbox,  dirPath, frameNr,identities=None, categories=None, names=None,offset=(0, 0),):
     for i, box in enumerate(bbox):
         x1, y1, x2, y2 = [int(i) for i in box]
         x1 += offset[0]
@@ -51,11 +51,21 @@ def draw_boxes(outputImg, srcImg, bbox, identities=None, categories=None, names=
         cat = int(categories[i]) if categories is not None else 0
         id = int(identities[i]) if identities is not None else 0
         data = (int((box[0]+box[2])/2),(int((box[1]+box[3])/2)))
-        label = str(id) + ":"+ names[cat]
+        label = names[cat] + "_"+ str(id)
         (w, h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
         cv2.putText(outputImg, label, (x1, y1 - 5),cv2.FONT_HERSHEY_SIMPLEX, 
                     0.6, [255, 255, 255], 1)
-        outputImg[y1:y2, x1:x2] = srcImg[y1:y2, x1:x2] 
+        outputFrame = np.zeros(srcImg.shape, dtype = "uint8")
+        outputFrame[y1:y2, x1:x2] = srcImg[y1:y2, x1:x2] 
+        # outputImg[y1:y2, x1:x2] = srcImg[y1:y2, x1:x2] 
+
+# + str(frameNr) 
+     
+        # folder = str(dirPath / label)
+        (dirPath / label).mkdir(parents=True, exist_ok=True)
+        savePath = str(dirPath / label / str(frameNr) )+'.jpg'
+        cv2.imwrite(savePath, outputFrame)
+        print(savePath)
         # cv2.circle(img, data, 6, color,-1)
     return outputImg
 #..............................................................................
@@ -198,47 +208,12 @@ def detect(save_img=False):
                 tracked_dets = sort_tracker.update(dets_to_sort)
                 tracks =sort_tracker.getTrackers()
 
-                txt_str = ""
-
-                #loop over tracks
-                for track in tracks:
-                    # color = compute_color_for_labels(id)
-                    #draw colored tracks
-                    if colored_trk:
-                        [cv2.line(outputFrame, (int(track.centroidarr[i][0]),
-                                    int(track.centroidarr[i][1])), 
-                                    (int(track.centroidarr[i+1][0]),
-                                    int(track.centroidarr[i+1][1])),
-                                    rand_color_list[track.id], thickness=2) 
-                                    for i,_ in  enumerate(track.centroidarr) 
-                                      if i < len(track.centroidarr)-1 ] 
-                    #draw same color tracks
-                    else:
-                        [cv2.line(outputFrame, (int(track.centroidarr[i][0]),
-                                    int(track.centroidarr[i][1])), 
-                                    (int(track.centroidarr[i+1][0]),
-                                    int(track.centroidarr[i+1][1])),
-                                    (255,0,0), thickness=2) 
-                                    for i,_ in  enumerate(track.centroidarr) 
-                                      if i < len(track.centroidarr)-1 ] 
-
-                    if save_txt:
-                        # Normalize coordinates
-                        txt_str += "%i %i %f %f" % (track.id, track.detclass, track.centroidarr[-1][0] / im0.shape[1], track.centroidarr[-1][1] / im0.shape[0])
-                        if save_bbox_dim:
-                            txt_str += " %f %f" % (np.abs(track.bbox_history[-1][0] - track.bbox_history[-1][2]) / im0.shape[0], np.abs(track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1])
-                        txt_str += "\n"
-                
-                if save_txt:
-                    with open(txt_path + '.txt', 'a') as f:
-                        f.write(txt_str)
-
                 # draw boxes for visualization
                 if len(tracked_dets)>0:
                     bbox_xyxy = tracked_dets[:,:4]
                     identities = tracked_dets[:, 8]
                     categories = tracked_dets[:, 4]
-                    draw_boxes(outputFrame,im0, bbox_xyxy, identities, categories, names)
+                    draw_boxes(outputFrame,im0, bbox_xyxy,save_dir, frame, identities, categories, names)
                 #........................................................
                 
             # Print time (inference + NMS)
@@ -252,24 +227,24 @@ def detect(save_img=False):
                   raise StopIteration
 
             # Save results (image with detections)
-            if save_img:
-                if dataset.mode == 'image':
-                    cv2.imwrite(save_path, outputFrame)
-                    print(f" The image with the result is saved in: {save_path}")
-                else:  # 'video' or 'stream'
-                    if vid_path != save_path:  # new video
-                        vid_path = save_path
-                        if isinstance(vid_writer, cv2.VideoWriter):
-                            vid_writer.release()  # release previous video writer
-                        if vid_cap:  # video
-                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        else:  # stream
-                            fps, w, h = 30, im0.shape[1], im0.shape[0]
-                            save_path += '.mp4'
-                        vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-                    vid_writer.write(outputFrame)
+            # if save_img:
+            #     if dataset.mode == 'image':
+            #         cv2.imwrite(save_path, outputFrame)
+            #         print(f" The image with the result is saved in: {save_path}")
+            #     else:  # 'video' or 'stream'
+            #         if vid_path != save_path:  # new video
+            #             vid_path = save_path
+            #             if isinstance(vid_writer, cv2.VideoWriter):
+            #                 vid_writer.release()  # release previous video writer
+            #             if vid_cap:  # video
+            #                 fps = vid_cap.get(cv2.CAP_PROP_FPS)
+            #                 w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            #                 h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            #             else:  # stream
+            #                 fps, w, h = 30, im0.shape[1], im0.shape[0]
+            #                 save_path += '.mp4'
+            #             vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+            #         vid_writer.write(outputFrame)
 
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''

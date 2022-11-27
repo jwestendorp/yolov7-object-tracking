@@ -46,7 +46,7 @@ def bbox_rel(*xyxy):
 def append_csv(filePath, frameNr, x1, x2,  y1, y2):
     # if (os.path.isFile(filePath))
     fields = [frameNr, x1, x2, y1, y2]
-    with open(filePath, "a") as csvfile:
+    with open(filePath, "a", newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(fields)
 
@@ -231,21 +231,30 @@ def detect(save_img=False):
                     #         track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1])
                     # txt_str += "\n"
 
+                    x1 = int(track.bbox_history[-1][0])
+                    y1 = int(track.bbox_history[-1][1])
+                    x2 = int(track.bbox_history[-1][2])
+                    y2 = int(track.bbox_history[-1][3])
+
+                    print(x1, y1, x2, y2)
+
                     # fileName = "%i - %i" % (track.detclass, track.id)
                     fileName = names[int(track.detclass)] + \
                         '-' + str(track.id) + '.csv'
 
                     filePath = str(save_dir / fileName)
 
-                    append_csv(filePath, frame,
-                               track.centroidarr[-1][0] / im0.shape[1],
-                               track.centroidarr[-1][1] / im0.shape[0],
-                               np.abs(
-                                   track.bbox_history[-1][0] - track.bbox_history[-1][2]) / im0.shape[0],
-                               np.abs(
-                                   track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1]
+                    append_csv(filePath, frame, x1, x2, y1, y2)
 
-                               )
+                    # old normalizes values
+                    # append_csv(filePath, frame,
+                    #            track.centroidarr[-1][0] / im0.shape[1],
+                    #            track.centroidarr[-1][1] / im0.shape[0],
+                    #            np.abs(
+                    #                track.bbox_history[-1][0] - track.bbox_history[-1][2]) / im0.shape[0],
+                    #            np.abs(
+                    #                track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1]
+                    #            )
 
                     # print(fileName)
 

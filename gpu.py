@@ -8,26 +8,27 @@ from os import listdir
 from os.path import isfile, join
 start = time.time()
 
+inputName = "sourceVideos/Gaining 10lbs in 24 hours! Can she do it_.mp4"
+
 
 currentFolder = Path().cwd()
-path_Csv = str(currentFolder / 'runs/detect/video.mp4/bird-0.csv')
-path_Video = str(currentFolder / 'video.mp4')
+# path_Csv = str(currentFolder / 'runs/detect/video.mp4/bird-0.csv')
+path_Video = str(currentFolder / inputName)
 
-path_Output = str(currentFolder / 'render/video.mp4/')
+path_Output = str(currentFolder / 'render' / inputName)
 
 
 vidin = ffmpegcv.VideoCaptureNV(path_Video)
 # vidout = ffmpegcv.VideoWriter(path_Output, 'h264', vidin.fps)
 
-currentFolder = Path().cwd()
 
-dirPath = str(currentFolder / 'runs/detect/video.mp4')
+dirPath = str(currentFolder / 'runs/detect' / inputName)
 files = [f for f in listdir(dirPath) if isfile(join(dirPath, f))]
 
 
 data = {}
 outputVideos = {}
-min_frames = 5
+min_frames = 100
 
 for i, fileName in enumerate(files):
     filePath = join(dirPath, fileName)
@@ -40,6 +41,7 @@ for i, fileName in enumerate(files):
         for row in values:
             d.append(row)
             rows += 1
+        csvfile.close()
 
         # print(values)
         if (rows >= min_frames):
@@ -48,8 +50,10 @@ for i, fileName in enumerate(files):
 
             joPath = join(path_Output, stem) + '.mp4'
 
+
+# vcodec should be rawvideo?
             outputVideos[stem] = ffmpegcv.VideoWriter(
-                joPath, 'h264', vidin.fps)
+                joPath, None, vidin.fps)
         else:
             print(stem, 'not enough values')
 
@@ -60,7 +64,7 @@ with vidin:
 
     frameCount = 0
     for frame in vidin:
-        # print(frameCount)
+        print(frameCount)
 
         for name, recognitions in data.items():
             # print(recognitions)
@@ -75,8 +79,9 @@ with vidin:
 
                 outputVideos[name].write(outputFrame)
                 # print(outputVideos[name])
-            # else:
-                # print(frameCount, 'no coordinates')
+            else:
+                print(frameCount, 'no coordinates')
+
         frameCount += 1
 
 

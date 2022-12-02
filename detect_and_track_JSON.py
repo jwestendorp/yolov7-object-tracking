@@ -236,7 +236,7 @@ def detect(save_img=False):
                     x2 = int(track.bbox_history[-1][2])
                     y2 = int(track.bbox_history[-1][3])
 
-                    print(x1, y1, x2, y2)
+                    # print(x1, y1, x2, y2)
 
                     # fileName = "%i - %i" % (track.detclass, track.id)
                     fileName = names[int(track.detclass)] + \

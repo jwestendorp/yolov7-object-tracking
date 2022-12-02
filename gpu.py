@@ -27,7 +27,7 @@ files = [f for f in listdir(dirPath) if isfile(join(dirPath, f))]
 
 data = {}
 outputVideos = {}
-MINIMUM_FRAMES = 5
+min_frames = 5
 
 for i, fileName in enumerate(files):
     filePath = join(dirPath, fileName)
@@ -35,23 +35,32 @@ for i, fileName in enumerate(files):
 
     with open(filePath, mode='r') as csvfile:
         values = csv.reader(csvfile, delimiter=',')
+        rows = 0
+        d = []
+        for row in values:
+            d.append(row)
+            rows += 1
 
-        # if (len(list(values)) >= MINIMUM_FRAMES):
-        data[stem] = {rows[0]: [int(rows[1]), int(rows[2]), int(rows[3]), int(rows[4])]
-                      for rows in values}
+        # print(values)
+        if (rows >= min_frames):
+            data[stem] = {rows[0]: [int(rows[1]), int(rows[2]), int(
+                rows[3]), int(rows[4])]for rows in d}
 
-        joPath = join(path_Output, stem) + '.mp4'
+            joPath = join(path_Output, stem) + '.mp4'
 
-        outputVideos[stem] = ffmpegcv.VideoWriter(
-            joPath, 'h264', vidin.fps)
-        # else:
-        #     print(stem, 'not enough values')
+            outputVideos[stem] = ffmpegcv.VideoWriter(
+                joPath, 'h264', vidin.fps)
+        else:
+            print(stem, 'not enough values')
+
+
+# print(data)
 
 with vidin:
 
     frameCount = 0
     for frame in vidin:
-        print(frameCount)
+        # print(frameCount)
 
         for name, recognitions in data.items():
             # print(recognitions)

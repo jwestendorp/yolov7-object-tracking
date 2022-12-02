@@ -28,7 +28,7 @@ files = [f for f in listdir(dirPath) if isfile(join(dirPath, f))]
 
 data = {}
 outputVideos = {}
-min_frames = 100
+min_frames = 10
 
 for i, fileName in enumerate(files):
     filePath = join(dirPath, fileName)
@@ -49,40 +49,45 @@ for i, fileName in enumerate(files):
                 rows[3]), int(rows[4])]for rows in d}
 
             joPath = join(path_Output, stem) + '.mp4'
-
-
-# vcodec should be rawvideo?
             outputVideos[stem] = ffmpegcv.VideoWriter(
                 joPath, None, vidin.fps)
         else:
             print(stem, 'not enough values')
 
 
-# print(data)
-
 with vidin:
 
     frameCount = 0
     for frame in vidin:
-        print(frameCount)
 
-        for name, recognitions in data.items():
-            # print(recognitions)
-            # coordinates = False
-            coordinates = recognitions.get(str(frameCount))
-            if (coordinates):
+        removeQueue = []
 
-                x1, x2, y1, y2 = coordinates
+        for name in outputVideos.keys():
+            recognitions = data.get(name)
 
-                outputFrame = np.zeros(frame.shape, dtype="uint8")
-                outputFrame[y1:y2, x1:x2] = frame[y1:y2, x1:x2]
+            if (recognitions):
 
-                outputVideos[name].write(outputFrame)
-                # print(outputVideos[name])
-            else:
-                print(frameCount, 'no coordinates')
+                coordinates = recognitions.get(str(frameCount))
+                if (coordinates):
+                    # print(frameCount, name, coordinates)
+                    # coordinates = False
+                    x1, x2, y1, y2 = coordinates
+
+                    outputFrame = np.zeros(frame.shape, dtype="uint8")
+                    outputFrame[y1:y2, x1:x2] = frame[y1:y2, x1:x2]
+
+                    outputVideos[name].write(outputFrame)
+                    lastFrame = int(list(recognitions.keys())[-1])
+
+                    if lastFrame <= frameCount:
+                        print('removing', name)
+                        outputVideos[name].release()
+                        removeQueue.append(name)
 
         frameCount += 1
+        for name in removeQueue:
+            del outputVideos[name]
+            print(len(list(outputVideos.keys())))
 
 
 # Grab Currrent Time After Running the Code

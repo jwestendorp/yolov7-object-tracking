@@ -10,18 +10,21 @@ from os import listdir
 
 # https://github.com/kkroening/ffmpeg-python/blob/master/examples/read_frame_as_jpeg.py#L16
 
+inputName = "sourceVideos/Gaining 10lbs in 24 hours! Can she do it_.mp4"
+
+
 currentFolder = Path().cwd()
 
 # filePath = str(currentFolder / 'runs' / 'detect' / 'video.mp4' / 'apple-5.csv')
-path_Csv = str(currentFolder / 'runs/detect/video.mp4/bird-0.csv')
+# path_Csv = str(currentFolder / 'runs/detect/video.mp4/bird-0.csv')
 # path_Video = str(currentFolder / 'video.mp4')
 
-path_OutputDir = str(currentFolder / 'crop/video.mp4/')
-path_InputDir = str(currentFolder / 'render/video.mp4/')
+path_OutputDir = str(currentFolder / 'crop' / inputName)
+path_InputDir = str(currentFolder / 'render' / inputName)
 # vidin = ffmpegcv.VideoCaptureNV(path_Video)
 
 
-path_Csv = str(currentFolder / 'runs/detect/video.mp4')
+path_Csv = str(currentFolder / 'runs/detect' / inputName)
 files = [f for f in listdir(path_InputDir) if isfile(join(path_InputDir, f))]
 
 

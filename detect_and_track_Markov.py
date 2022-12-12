@@ -219,11 +219,8 @@ def detect(save_img=False):
                 for c in labels.unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     # add to string
-                    s += f"{n}_{names[int(c)]}, "
+                    s += f"{n}_{names[int(c)]};"
 
-                line = currentString, ';', s
-                print(s)
-                txtFile = 'chain.txt'
                 txtPath = str(save_dir / 'chain.txt')
                 append_txt(txtPath, s)
                 # udpate

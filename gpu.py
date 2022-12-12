@@ -8,7 +8,7 @@ from os import listdir
 from os.path import isfile, join
 start = time.time()
 
-inputName = "sourceVideos/Gaining 10lbs in 24 hours! Can she do it_.mp4"
+inputName = "sourceVideos/download (3).mp4"
 
 
 currentFolder = Path().cwd()

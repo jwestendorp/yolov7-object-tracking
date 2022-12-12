@@ -10,7 +10,7 @@ from os import listdir
 
 # https://github.com/kkroening/ffmpeg-python/blob/master/examples/read_frame_as_jpeg.py#L16
 
-inputName = "sourceVideos/Gaining 10lbs in 24 hours! Can she do it_.mp4"
+inputName = "sourceVideos/download (3).mp4"
 
 
 currentFolder = Path().cwd()

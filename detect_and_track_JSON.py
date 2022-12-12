@@ -51,6 +51,11 @@ def append_csv(filePath, frameNr, x1, x2,  y1, y2):
         writer.writerow(fields)
 
 
+def append_txt(filePath, line):
+    with open(filePath, "a", newline='') as file_object:
+        file_object.write(str(line)+'\n')
+
+
 """Function to Draw Bounding boxes"""
 
 
@@ -204,7 +209,11 @@ def detect(save_img=False):
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     # add to string
-                    s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "
+                    s += f"{n}_{names[int(c)]};"
+
+                # save da chainnnnnnn
+                txtPath = str(save_dir / 'chain.txt')
+                append_txt(txtPath, s)
 
                 # ..................USE TRACK FUNCTION....................
                 # pass an empty array to sort

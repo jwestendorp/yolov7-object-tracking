@@ -4,11 +4,11 @@ import ffmpegcv
 import numpy as np
 from pathlib import Path
 import time
-from os import listdir
+from os import listdir, path, makedirs
 from os.path import isfile, join
 start = time.time()
 
-inputName = "sourceVideos/download (3).mp4"
+inputName = "sourceVideos/vj-tophu/braindead-541.mp4"
 
 
 currentFolder = Path().cwd()
@@ -16,6 +16,9 @@ currentFolder = Path().cwd()
 path_Video = str(currentFolder / inputName)
 
 path_Output = str(currentFolder / 'render' / inputName)
+
+if not path.exists(path_Output):
+    makedirs(path_Output)
 
 
 vidin = ffmpegcv.VideoCaptureNV(path_Video)

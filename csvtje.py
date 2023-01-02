@@ -8,10 +8,15 @@ from os.path import isfile, join
 
 currentFolder = Path().cwd()
 
-dirPath = str(currentFolder / 'runs/detect/video.mp4/')
-files = [f for f in listdir(dirPath) if isfile(join(dirPath, f))]
+dirPath = str(currentFolder /
+              'runs/detect/sourceVideos/vj-tophu/braindead-541.mp4/')
+files = [f for f in listdir(dirPath) if (
+    isfile(join(dirPath, f)) and
+    f.split('.')[-1] == 'csv'
+)]
 
-# print(files)
+
+# print(files[0])
 
 d = {}
 for i, fileName in enumerate(files):

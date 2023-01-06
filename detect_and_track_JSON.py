@@ -23,6 +23,9 @@ from utils.download_weights import download
 import skimage
 from sort import *
 import csv
+import uuid
+import random
+INSTANCE_ID = uuid.uuid1()
 
 # ............................... Tracker Functions ............................
 """ Random created palette"""
@@ -136,7 +139,7 @@ def detect(save_img=False):
 
     # Get names and colors
     names = model.module.names if hasattr(model, 'module') else model.names
-    colors = [[random.randint(0, 255) for _ in range(3)] for _ in names]
+    # colors = [[random.randint(0, 255) for _ in range(3)] for _ in names]
 
     # Run inference
     if device.type != 'cpu':
@@ -232,42 +235,27 @@ def detect(save_img=False):
 
                 # loop over tracks
                 for track in tracks:
-                    # Normalize coordinates
-                    # txt_str += "%i %i %f %f" % (track.id, track.detclass,
-                    #                             track.centroidarr[-1][0] / im0.shape[1], track.centroidarr[-1][1] / im0.shape[0])
-                    # if save_bbox_dim:
-                    #     txt_str += " %f %f" % (np.abs(track.bbox_history[-1][0] - track.bbox_history[-1][2]) / im0.shape[0], np.abs(
-                    #         track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1])
-                    # txt_str += "\n"
 
                     x1 = int(track.bbox_history[-1][0])
                     y1 = int(track.bbox_history[-1][1])
                     x2 = int(track.bbox_history[-1][2])
                     y2 = int(track.bbox_history[-1][3])
 
-                    # print(x1, y1, x2, y2)
+                    # fileName = names[int(track.detclass)] + \
+                    #                         '-' + str(track.id) + '.csv'
+                    seed = hash(str(track.detclass) +
+                                str(track.id) + str(INSTANCE_ID))
 
-                    # fileName = "%i - %i" % (track.detclass, track.id)
+                    rd = random.Random()
+                    rd.seed(seed)
+
                     fileName = names[int(track.detclass)] + \
-                        '-' + str(track.id) + '.csv'
+                        '-' + str(uuid.UUID(int=rd.getrandbits(128))) + '.csv'
 
                     filePath = str(save_dir / fileName)
 
                     append_csv(filePath, frame, x1, x2, y1, y2)
 
-                    # old normalizes values
-                    # append_csv(filePath, frame,
-                    #            track.centroidarr[-1][0] / im0.shape[1],
-                    #            track.centroidarr[-1][1] / im0.shape[0],
-                    #            np.abs(
-                    #                track.bbox_history[-1][0] - track.bbox_history[-1][2]) / im0.shape[0],
-                    #            np.abs(
-                    #                track.bbox_history[-1][1] - track.bbox_history[-1][3]) / im0.shape[1]
-                    #            )
-
-                    # print(fileName)
-
-            # Print time (inference + NMS)
             print(
                 f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
 

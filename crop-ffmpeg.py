@@ -6,11 +6,22 @@ from utils.datasets import LoadImages
 import ffmpegcv
 import ffmpeg
 from os.path import isfile, join
-from os import listdir
+from os import listdir, path, makedirs
 
 # https://github.com/kkroening/ffmpeg-python/blob/master/examples/read_frame_as_jpeg.py#L16
+import argparse
 
-inputName = "sourceVideos/vj-tophu/braindead-535.mp4"
+# get the source from args
+parser = argparse.ArgumentParser()
+parser.add_argument('--source', type=str,
+                    default='sourceVideos/vj-tophu/braindead-535.mp4', help='source')
+
+args = parser.parse_args()
+print(args)
+# ---
+
+
+inputName = args.source
 
 
 currentFolder = Path().cwd()
@@ -21,7 +32,11 @@ currentFolder = Path().cwd()
 
 path_OutputDir = str(currentFolder / 'crop' / inputName)
 path_InputDir = str(currentFolder / 'render' / inputName)
+
 # vidin = ffmpegcv.VideoCaptureNV(path_Video)
+
+if not path.exists(path_OutputDir):
+    makedirs(path_OutputDir)
 
 
 path_Csv = str(currentFolder / 'runs/detect' / inputName)
@@ -61,3 +76,7 @@ for name, coords in data.items():
     (
         ffmpeg.input(inPath).crop(x1, y1, x2-x1, y2-y1).output(outPath).run()
     )
+
+
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser()

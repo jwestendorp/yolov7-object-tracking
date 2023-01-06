@@ -5,11 +5,21 @@ from pathlib import Path
 from utils.datasets import LoadImages
 from os import listdir
 from os.path import isfile, join
+import argparse
+
+# get the source from args
+parser = argparse.ArgumentParser()
+parser.add_argument('--source', type=str,
+                    default='runs/detect/video.mp4', help='source')
+
+args = parser.parse_args()
+print(args)
+# ---
 
 currentFolder = Path().cwd()
 
 dirPath = str(currentFolder /
-              'runs/detect/sourceVideos/vj-tophu/braindead-541.mp4/')
+              'runs/detect' / args.source)
 files = [f for f in listdir(dirPath) if (
     isfile(join(dirPath, f)) and
     f.split('.')[-1] == 'csv'
@@ -32,7 +42,6 @@ for i, fileName in enumerate(files):
 
 for key, values in d.items():
     print(key)
-
 
 # for i in range(1, 999):
 

@@ -1,3 +1,4 @@
+import argparse
 import cv2
 import csv
 import ffmpegcv
@@ -8,7 +9,19 @@ from os import listdir, path, makedirs
 from os.path import isfile, join
 start = time.time()
 
-inputName = "sourceVideos/vj-tophu/braindead-541.mp4"
+# get the source from args
+parser = argparse.ArgumentParser()
+parser.add_argument('--source', type=str,
+                    default='sourceVideos/vj-tophu/braindead-535.mp4', help='source')
+parser.add_argument('--min_frames', type=int,
+                    default=10, help='source')
+
+args = parser.parse_args()
+print(args)
+# ---
+
+
+inputName = args.source
 
 
 currentFolder = Path().cwd()
@@ -31,10 +44,15 @@ files = [f for f in listdir(dirPath) if isfile(join(dirPath, f))]
 
 data = {}
 outputVideos = {}
-min_frames = 10
+min_frames = args.min_frames
 
 for i, fileName in enumerate(files):
     filePath = join(dirPath, fileName)
+    file_extension = path.splitext(filePath)[1]
+
+    if file_extension == ".txt":
+        continue
+
     stem = Path(fileName).stem
 
     with open(filePath, mode='r') as csvfile:
@@ -54,6 +72,7 @@ for i, fileName in enumerate(files):
             joPath = join(path_Output, stem) + '.mp4'
             outputVideos[stem] = ffmpegcv.VideoWriter(
                 joPath, None, vidin.fps)
+            print(stem, 'enough values')
         else:
             print(stem, 'not enough values')
 

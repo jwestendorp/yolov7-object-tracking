@@ -6,3 +6,5 @@ traced_model.pt
 
 *.mp4
 /.idea/*
+
+markov/**/*.json

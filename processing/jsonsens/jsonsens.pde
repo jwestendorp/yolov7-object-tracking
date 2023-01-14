@@ -8,8 +8,8 @@ PApplet sketchPApplet;
 void setup() {
   sketchPApplet=this;
 
-  chain = loadJSONObject("chain.json").getJSONObject("chain");
-  stats = loadJSONObject("stats.json");
+  chain = loadJSONObject("chain-braindead.json").getJSONObject("chain");
+  stats = loadJSONObject("stats-braindead.json");
 
   img = loadImage("test.jpg");
   size(1280, 720);
@@ -46,8 +46,8 @@ void handleListChange(String newIndex) {
     }
   }
 
-  println(from, to);
-  println(diff);
+  print("From->to "); println(from, to);
+  print("diff");println(diff);
 
   // update the list according to the diff
 
@@ -96,6 +96,7 @@ void removeItem(String name) {
 
 void addItem(String name) {
   JSONArray pList = stats.getJSONArray(name);
+  print("plist; ", name); println(pList);
   int randomIndex = int( random( pList.size()) );
   int[] values = JSonArray2IntArray( pList.getJSONArray(randomIndex) );
 

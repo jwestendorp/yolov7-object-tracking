@@ -26,9 +26,15 @@ python crop-ffmpeg.py --source "./sourceVideos/vj-tophu/${file.name}
 
 ## markov
 
-create a `chain.txt`:
+create a `chain.json`:
 
 ```
+node chainJson.mjs "./runs/detect/sourceVideos/vj-tophu/high-998.mp4/chain.txt"
+```
+
+use ./markov/chainJson.js to merge json chain files
+
+<!-- ```
 # put a source from crop.1
 python csvtje.py --source "sourceVideos/vj-tophu/braindead-535.mp4"
-```
+``` -->

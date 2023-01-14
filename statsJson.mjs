@@ -3,7 +3,8 @@ import fs from "fs/promises";
 import path from "path";
 // import chainJson from "./stats.json" assert { type: "json" };
 
-const dir = "./runs/detect/video.mp4/";
+// const dir = "./runs/detect/video.mp4/";
+const dir = process.argv[2];
 
 // if (chainJson.files.includes(txtFile))
 //   console.warn("already includes, ", txtFile);
@@ -35,7 +36,8 @@ const readDirectory = async (dir) => {
   console.log(obj);
 
   let data = JSON.stringify(obj);
-  writeFileSync("stats.json", data);
+  let crumbs = dir.split("/");
+  writeFileSync(`./markov/stats-${crumbs[crumbs.length - 2]}.json`, data);
 };
 
 readDirectory(dir);

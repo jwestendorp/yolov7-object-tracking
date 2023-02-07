@@ -1,5 +1,6 @@
 JSONObject chain;
 JSONObject stats;
+JSONObject masks;
 String index = "_START";
 PImage img;
 ArrayList<Recognition> objects = new ArrayList<Recognition>();
@@ -12,11 +13,13 @@ void setup() {
 
   chain = loadJSONObject("chain-braindead.json").getJSONObject("chain");
   stats = loadJSONObject("stats-braindead.json");
+  masks = loadJSONObject("masks-braindead.json");
 
   img = loadImage("test.jpg");
-  size(1280, 720);
+  size(1920, 1080);
 
   fileNamesMap = getFileNames("clips");
+  colorMode(RGB, 255, 255, 255, 255) ; 
 
   // init
   //index = nextLink();
@@ -85,13 +88,34 @@ IntDict linkDict(String str) {
 
 void movieEvent(Movie m) {
   m.read();
+
+  // remove background black
+  m.loadPixels();
+  int numPixels = m.width * m.height;
+  for (int i = 0; i < numPixels; i++) {
+
+    color currColor = m.pixels[i];
+    // Extract the red, green, and blue components of the current pixel's color
+    int currR = (currColor >> 16) & 0xFF;
+    int currG = (currColor >> 8) & 0xFF;
+    int currB = currColor & 0xFF;
+
+
+    if ( currR+currB+currG ==0 ) {
+      //println("keying");
+      m.pixels[i] = color(#006699, 0);
+    }
+  }
+
+
+  m.updatePixels();
 }
 
 void removeItem(String name) {
   ArrayList<Integer> indices = new ArrayList<Integer>();
 
   for (int i=0; i<objects.size(); i++) {
-    if (objects.get(i).name.equals(name)) indices.add(i);
+    if (objects.get(i).tag.equals(name)) indices.add(i);
   }
 
   if ( !(indices.size() > 0) ) return;

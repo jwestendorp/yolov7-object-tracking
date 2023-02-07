@@ -1,5 +1,8 @@
 String nextLink() {
 
+  
+  println(index);
+  println(chain.getJSONObject(index));
   JSONObject links = chain.getJSONObject(index).getJSONObject("links");
   int count = chain.getJSONObject(index).getInt("count");
 

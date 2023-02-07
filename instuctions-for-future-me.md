@@ -1,4 +1,4 @@
-## crop
+# crop
 
 - start the terminal in venv
 
@@ -24,7 +24,7 @@ python crop-ffmpeg.py --source "./sourceVideos/vj-tophu/${file.name}
 
 ---
 
-## markov
+# markov
 
 create a `chain.json`:
 
@@ -44,7 +44,7 @@ node statsJson.mjs "./runs/detect/sourceVideos/vj-tophu/high-998.mp4/
 python csvtje.py --source "sourceVideos/vj-tophu/braindead-535.mp4"
 ``` -->
 
-## scene detect
+# scene detect
 create cuts
 ```
  bash scene-detect.sh -i high.mp4 -t 0.2 -o gocuts.txt
@@ -60,3 +60,14 @@ convert the cutlist
  bash scene-cut.sh -i TophuGo.mp4 -c gocutlist.txt -x 1
  ```
  -x can be used to change the startIndex
+
+ ---
+ ### list all files
+ ```
+ Deno run --allow-all getFiles.js
+ ```
+
+Run many scripts at one (change contents)
+ ```
+ batchCrop.bat
+ ```

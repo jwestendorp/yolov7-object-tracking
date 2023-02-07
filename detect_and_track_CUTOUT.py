@@ -22,6 +22,7 @@ from utils.download_weights import download
 #For SORT tracking
 import skimage
 from sort import *
+import json
 
 #............................... Tracker Functions ............................
 """ Random created palette"""
@@ -42,6 +43,11 @@ def bbox_rel(*xyxy):
 
 """Function to Draw Bounding boxes"""
 def draw_boxes(outputImg, srcImg, bbox,  dirPath, frameNr,identities=None, categories=None, names=None,offset=(0, 0),):
+    
+    filename = 'test.json'
+    with open(filename, "r") as file:
+        data = json.load(file)
+    
     for i, box in enumerate(bbox):
         x1, y1, x2, y2 = [int(i) for i in box]
         x1 += offset[0]
@@ -64,9 +70,14 @@ def draw_boxes(outputImg, srcImg, bbox,  dirPath, frameNr,identities=None, categ
         # folder = str(dirPath / label)
         (dirPath / label).mkdir(parents=True, exist_ok=True)
         savePath = str(dirPath / label / str(frameNr) )+'.jpg'
-        cv2.imwrite(savePath, outputFrame)
+        # cv2.imwrite(savePath, outputFrame)
         print(savePath)
         # cv2.circle(img, data, 6, color,-1)
+
+        data.append()
+ 
+
+
     return outputImg
 #..............................................................................
 

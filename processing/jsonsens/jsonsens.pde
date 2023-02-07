@@ -5,6 +5,8 @@ PImage img;
 ArrayList<Recognition> objects = new ArrayList<Recognition>();
 PApplet sketchPApplet;
 
+HashMap<String, String[]> fileNamesMap;
+
 void setup() {
   sketchPApplet=this;
 
@@ -13,6 +15,8 @@ void setup() {
 
   img = loadImage("test.jpg");
   size(1280, 720);
+
+  fileNamesMap = getFileNames("clips");
 
   // init
   //index = nextLink();
@@ -46,8 +50,10 @@ void handleListChange(String newIndex) {
     }
   }
 
-  print("From->to "); println(from, to);
-  print("diff");println(diff);
+  print("From->to "); 
+  println(from, to);
+  print("diff");
+  println(diff);
 
   // update the list according to the diff
 
@@ -77,9 +83,9 @@ IntDict linkDict(String str) {
 }
 
 
-  void movieEvent(Movie m) {
-    m.read();
-  }
+void movieEvent(Movie m) {
+  m.read();
+}
 
 void removeItem(String name) {
   ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -96,7 +102,8 @@ void removeItem(String name) {
 
 void addItem(String name) {
   JSONArray pList = stats.getJSONArray(name);
-  print("plist; ", name); println(pList);
+  //print("plist; ", name); 
+  //println(pList);
   int randomIndex = int( random( pList.size()) );
   int[] values = JSonArray2IntArray( pList.getJSONArray(randomIndex) );
 
@@ -113,18 +120,14 @@ void draw() {
     return;
   }
 
-
   String next = nextLink();
 
-
   handleListChange(next);
-  println(objects.size());
+  //println(objects.size());
 
-  for (Recognition object: objects){
+  for (Recognition object : objects) {
     object.update();
   }
 
   index = next;
-
-
 }

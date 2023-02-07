@@ -17,6 +17,16 @@ class Recognition {
     img =loadImage("test.jpg");
     mov = new Movie(ref, "bird-0.mp4");
     mov.loop();
+
+
+    String tag= iname.split("-")[0];
+    String[] files = fileNamesMap.get(tag);
+    
+
+    String randomFile = files[ int(random(0,files.length) ) ];
+        println("file: " , randomFile);
+    
+    
   }
 
   void update() {

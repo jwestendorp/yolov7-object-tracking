@@ -16,7 +16,6 @@ HashMap<String, String[]> getFileNames(String dir) {
 
   HashMap<String, String[]> hm = new HashMap<String, String[]>();
 
-  println(folder);
   // list the files in the data folder
   String[] filenames = sort( folder.list() );
 
@@ -65,4 +64,9 @@ HashMap<String, String[]> getFileNames(String dir) {
 
 
   return hm;
+}
+
+// https://github.com/processing/processing-video/issues/182
+boolean is_movie_finished(Movie m) {
+  return m.duration() - m.time() < 0.05;
 }

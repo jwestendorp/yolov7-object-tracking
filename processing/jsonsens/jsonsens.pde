@@ -1,3 +1,7 @@
+import processing.video.*;
+
+
+
 JSONObject chain;
 JSONObject stats;
 JSONObject masks;
@@ -7,8 +11,11 @@ ArrayList<Recognition> objects = new ArrayList<Recognition>();
 PApplet sketchPApplet;
 
 HashMap<String, String[]> fileNamesMap;
+boolean done = false;
 
 void setup() {
+
+  //frameRate(5);
   sketchPApplet=this;
 
   chain = loadJSONObject("chain-braindead.json").getJSONObject("chain");
@@ -86,30 +93,30 @@ IntDict linkDict(String str) {
 }
 
 
-void movieEvent(Movie m) {
-  m.read();
+//void movieEvent(Movie m) {
+//  m.read();
 
-  // remove background black
-  m.loadPixels();
-  int numPixels = m.width * m.height;
-  for (int i = 0; i < numPixels; i++) {
+// remove background black
+//m.loadPixels();
+//int numPixels = m.width * m.height;
+//for (int i = 0; i < numPixels; i++) {
 
-    color currColor = m.pixels[i];
-    // Extract the red, green, and blue components of the current pixel's color
-    int currR = (currColor >> 16) & 0xFF;
-    int currG = (currColor >> 8) & 0xFF;
-    int currB = currColor & 0xFF;
-
-
-    if ( currR+currB+currG ==0 ) {
-      //println("keying");
-      m.pixels[i] = color(#006699, 0);
-    }
-  }
+//  color currColor = m.pixels[i];
+//  // Extract the red, green, and blue components of the current pixel's color
+//  int currR = (currColor >> 16) & 0xFF;
+//  int currG = (currColor >> 8) & 0xFF;
+//  int currB = currColor & 0xFF;
 
 
-  m.updatePixels();
-}
+//  if ( currR+currB+currG ==0 ) {
+//    //println("keying");
+//    m.pixels[i] = color(#006699, 0);
+//  }
+//}
+
+
+//m.updatePixels();
+//}
 
 void removeItem(String name) {
   ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -125,6 +132,12 @@ void removeItem(String name) {
 }
 
 void addItem(String name) {
+
+  if (fileNamesMap.get(name)==null) {
+    println("No files exists for tag: ", name);
+    return;
+  }
+
   JSONArray pList = stats.getJSONArray(name);
   //print("plist; ", name); 
   //println(pList);
@@ -139,12 +152,21 @@ void addItem(String name) {
 
 void draw() {
 
-  if ( index.equals("_END") ) {
-    println("DONE!");
+  if (done) {
+    background(250, 10, 0);
     return;
   }
 
+  background(0);
+
+
+
   String next = nextLink();
+   if ( next.equals("_END") ) {
+    println("DONE!");
+    done = true;
+    return;
+  }
 
   handleListChange(next);
   //println(objects.size());
@@ -154,4 +176,7 @@ void draw() {
   }
 
   index = next;
+  rec();
+
+ 
 }

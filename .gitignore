@@ -5,6 +5,7 @@ weights/
 traced_model.pt
 
 *.mp4
+*.mov
 /.idea/*
 
 markov/**/*.json

@@ -44,14 +44,16 @@ const readDirectory = async (dir) => {
   let data = JSON.stringify(obj);
   let maskData = JSON.stringify(maskObj);
   let crumbs = dir.split("/");
-  // writeFileSync(`./markov/stats-${crumbs[crumbs.length - 2]}.json`, data);
-  let p = `./markov/mask-${crumbs[crumbs.length - 2]}.json`;
+  writeFileSync(`./markov/masks/stats-${crumbs[crumbs.length - 2]}.json`, data);
 
-  console.log(p);
-  writeFileSync(
-    `./markov/masks/mask-${crumbs[crumbs.length - 2]}.json`,
-    maskData
-  );
+  /// THE GREENSCREEN STUFF!
+  // let p = `./markov/mask-${crumbs[crumbs.length - 2]}.json`;
+
+  // console.log(p);
+  // writeFileSync(
+  //   `./markov/masks/mask-${crumbs[crumbs.length - 2]}.json`,
+  //   maskData
+  // );
 };
 
 readDirectory(dir);

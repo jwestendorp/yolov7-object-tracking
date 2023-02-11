@@ -11,7 +11,7 @@ for await (const { name } of Deno.readDir("./markov/masks")) {
 
 try {
   await Deno.writeTextFile(
-    `./markov/masks-braindead.json`,
+    `./markov/stats-toks.json`,
     // JSON.stringify({ files, chain: merge })
     JSON.stringify({ ...merge })
   );

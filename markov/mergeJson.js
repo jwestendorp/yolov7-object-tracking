@@ -1,9 +1,9 @@
 let merge = {};
 let files = [];
 
-for await (const { name } of Deno.readDir("./markov/braindead")) {
+for await (const { name } of Deno.readDir("./markov/toks")) {
   console.log(name);
-  let json = JSON.parse(await Deno.readTextFile(`./markov/braindead/${name}`));
+  let json = JSON.parse(await Deno.readTextFile(`./markov/toks/${name}`));
   let chain = json.chain;
 
   files = [...files, name];
@@ -34,7 +34,7 @@ for await (const { name } of Deno.readDir("./markov/braindead")) {
 
 try {
   await Deno.writeTextFile(
-    `./markov/chain-braindead.json`,
+    `./markov/chain-toks.json`,
     JSON.stringify({ files, chain: merge })
   );
 } catch (e) {

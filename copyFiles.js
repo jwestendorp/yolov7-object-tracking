@@ -1,5 +1,5 @@
 let path =
-  "C:/Users/jonix/PycharmProjects/yolov7-object-tracking/crop/sourceVideos/vj-tophu";
+  "C:/Users/jonix/PycharmProjects/yolov7-object-tracking/crop/sourceVideos/toks";
 for await (const { name, isDirectory, isFile } of Deno.readDir(path)) {
   if (isDirectory) {
     for await (const file of Deno.readDir(`${path}/${name}`)) {
@@ -8,7 +8,7 @@ for await (const { name, isDirectory, isFile } of Deno.readDir(path)) {
         console.log(file.name);
         await Deno.copyFile(
           `${path}/${name}/${file.name}`,
-          `C:/Users/jonix/PycharmProjects/yolov7-object-tracking/crop/allVideos/${file.name}`
+          `C:/Users/jonix/PycharmProjects/yolov7-object-tracking/crop/toks/${file.name}`
         );
       }
     }

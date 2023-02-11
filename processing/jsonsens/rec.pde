@@ -5,9 +5,14 @@ VideoExport videoExport;
 
 void rec() {
   if (frameCount == 1) {
-    videoExport = new VideoExport(this, "/render/"+sketchname+".mp4");
+    videoExport = new VideoExport(this, "/render/"+sketchname+"2"+".mov");
     videoExport.setFrameRate(30);  
     videoExport.startMovie();
   }
   videoExport.saveFrame();
+}
+
+void stopRec() {
+  videoExport.endMovie();
+  exit();
 }

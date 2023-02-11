@@ -69,7 +69,7 @@ for i, fileName in enumerate(files):
             data[stem] = {rows[0]: [int(rows[1]), int(rows[2]), int(
                 rows[3]), int(rows[4])]for rows in d}
 
-            joPath = join(path_Output, stem) + '.mp4'
+            joPath = join(path_Output, stem) + '.mov'
             outputVideos[stem] = ffmpegcv.VideoWriter(
                 joPath, None, vidin.fps)
             print(stem, 'enough values')
@@ -94,6 +94,21 @@ with vidin:
                     # print(frameCount, name, coordinates)
                     # coordinates = False
                     x1, x2, y1, y2 = coordinates
+
+                    # RGB = np.zeros(frame.shape, dtype="uint8")
+                    # h, w = RGB.shape[:2]
+
+                    # # adding alpha channel
+                    # # -> make the og frame opaque
+                    # frameAlpha = np.dstack(
+                    #     (frame, np.zeros((h, w), dtype=np.uint8)+255))
+                    # # -> make the new frame empty
+                    # RGBA = np.dstack(
+                    #     (RGB, np.zeros((h, w), dtype=np.uint8)))
+                    # # print("SHAPE")
+                    # # print(frameAlpha.shape)
+                    # outputFrame = RGBA
+                    # outputFrame[y1:y2, x1:x2] = frameAlpha[y1:y2, x1:x2]
 
                     outputFrame = np.zeros(frame.shape, dtype="uint8")
                     outputFrame[y1:y2, x1:x2] = frame[y1:y2, x1:x2]

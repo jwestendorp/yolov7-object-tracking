@@ -12,20 +12,29 @@ PApplet sketchPApplet;
 
 HashMap<String, String[]> fileNamesMap;
 boolean done = false;
+String clipDir = "toks";
+
+
+void keyReleased() {
+  if (key == 's' || key=='S') {
+    done=true;
+  }
+}
+
 
 void setup() {
 
   //frameRate(5);
   sketchPApplet=this;
 
-  chain = loadJSONObject("chain-braindead.json").getJSONObject("chain");
-  stats = loadJSONObject("stats-braindead.json");
+  chain = loadJSONObject("chain-toks.json").getJSONObject("chain");
+  stats = loadJSONObject("stats-toks.json");
   masks = loadJSONObject("masks-braindead.json");
 
   img = loadImage("test.jpg");
-  size(1920, 1080);
+  size(576, 1024,P2D);
 
-  fileNamesMap = getFileNames("clips");
+  fileNamesMap = getFileNames("toks");
   colorMode(RGB, 255, 255, 255, 255) ; 
 
   // init
@@ -153,6 +162,7 @@ void addItem(String name) {
 void draw() {
 
   if (done) {
+    stopRec();
     background(250, 10, 0);
     return;
   }
@@ -162,7 +172,7 @@ void draw() {
 
 
   String next = nextLink();
-   if ( next.equals("_END") ) {
+  if ( next.equals("_END") ) {
     println("DONE!");
     done = true;
     return;
@@ -176,7 +186,5 @@ void draw() {
   }
 
   index = next;
-  rec();
-
- 
+  if (!done )rec();
 }

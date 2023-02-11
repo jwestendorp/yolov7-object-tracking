@@ -32,31 +32,32 @@ class Recognition {
 
     fileName = files[ index];
     println("file: ", fileName);
-    mov = new Movie(ref, "clips/"+fileName);
-    mov.loop();
+    mov = new Movie(ref, "toks/"+fileName);
+    mov.play();
+    //mov.loop();
   }
 
   void update() {
-    
+
     //manually looping............................
-    if( is_movie_finished(mov) ) mov.jump(0);
+    if ( is_movie_finished(mov) ) mov.jump(0);
 
     if (mov.available()) {
       mov.read();
-    }else{
-    println("No frame available: " ,fileName);
+    } else {
+      println("No frame available: ", fileName);
     }
-      //if (true) {
+    if (false) {
 
 
-      String fileBase = fileName.split(".mp4")[0];
+      String fileBase = fileName.split(".mov")[0];
       JSONArray coordsList = masks.getJSONArray(fileBase);
-      
-      if (coordsList ==null){
+
+      if (coordsList ==null) {
         println("NO MASK IN THE DATABASE! ", fileBase);
-      return;
+        return;
       }
-      
+
       //println("jo", mov, fileBase, coordsList);
       //println(mov.time(), mov.duration(), coordsList.size());
       int frameIndex = int (  (  (mov.time()%mov.duration())  / mov.duration()) *coordsList.size() );
@@ -83,11 +84,9 @@ class Recognition {
           //maskArray[i] = int(random(0, 255));
         }
       }
+    }
 
-
-
-      image(mov, x, y, w, h);
-      //image(mov, x, y, mov.width, mov.height);
-
+    image(mov, x, y, w, h);
+    //image(mov, x, y, mov.width, mov.height);
   }
 }

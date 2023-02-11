@@ -69,12 +69,14 @@ for i, fileName in enumerate(files):
 for name, coords in data.items():
 
     x1, x2, y1, y2 = coords
-    inPath = join(path_InputDir, name) + '.mp4'
-    outPath = join(path_OutputDir, name) + '.mp4'
+    inPath = join(path_InputDir, name) + '.mov'
+    outPath = join(path_OutputDir, name) + '.mov'
 
     # print(inPath, outPath, coords)
     (
         ffmpeg.input(inPath).crop(x1, y1, x2-x1, y2-y1).output(outPath).run()
+        # ffmpeg.input(inPath).crop(x1, y1, x2-x1, y2 -
+        #                           y1).output(outPath, vcodec='v410').run()
     )
 
 

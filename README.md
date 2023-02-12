@@ -5,7 +5,7 @@ This `detect_and_track.py` script was changed (renamed to `detect_and_track_JSON
 
 The flow of the data is descibed in the following diagram:
 
-![C:\Users\jonix\PycharmProjects\yolov7-object-tracking\diagram.jpg](file:///C:/Users/jonix/PycharmProjects/yolov7-object-tracking/diagram.jpg)
+![](diagram.jpg)
 
 To render a video, run the sketch from the `processing/jsonsens/` directory.
 

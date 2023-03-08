@@ -2,17 +2,18 @@ import processing.video.*;
 
 
 
+String[] folders;
 JSONObject chain;
 JSONObject stats;
 JSONObject masks;
 String index = "_START";
 PImage img;
 ArrayList<Recognition> objects = new ArrayList<Recognition>();
-PApplet sketchPApplet;
+
 
 HashMap<String, String[]> fileNamesMap;
 boolean done = false;
-String clipDir = "toks";
+String clipDir = "clips";
 
 
 void keyReleased() {
@@ -24,9 +25,6 @@ void keyReleased() {
 
 void setup() {
 
-  //frameRate(5);
-  sketchPApplet=this;
-
   chain = loadJSONObject("chain-toks.json").getJSONObject("chain");
   stats = loadJSONObject("stats-toks.json");
   masks = loadJSONObject("masks-braindead.json");
@@ -34,11 +32,9 @@ void setup() {
   img = loadImage("test.jpg");
   size(576, 1024,P2D);
 
-  fileNamesMap = getFileNames("toks");
+  fileNamesMap = getFileNames(clipDir);
   colorMode(RGB, 255, 255, 255, 255) ; 
 
-  // init
-  //index = nextLink();
 }
 
 
@@ -102,31 +98,6 @@ IntDict linkDict(String str) {
 }
 
 
-//void movieEvent(Movie m) {
-//  m.read();
-
-// remove background black
-//m.loadPixels();
-//int numPixels = m.width * m.height;
-//for (int i = 0; i < numPixels; i++) {
-
-//  color currColor = m.pixels[i];
-//  // Extract the red, green, and blue components of the current pixel's color
-//  int currR = (currColor >> 16) & 0xFF;
-//  int currG = (currColor >> 8) & 0xFF;
-//  int currB = currColor & 0xFF;
-
-
-//  if ( currR+currB+currG ==0 ) {
-//    //println("keying");
-//    m.pixels[i] = color(#006699, 0);
-//  }
-//}
-
-
-//m.updatePixels();
-//}
-
 void removeItem(String name) {
   ArrayList<Integer> indices = new ArrayList<Integer>();
 
@@ -154,7 +125,7 @@ void addItem(String name) {
   int[] values = JSonArray2IntArray( pList.getJSONArray(randomIndex) );
 
   objects.add(
-    new Recognition(sketchPApplet, values[0], values[1], values[2], values[3], name)
+    new Recognition( values[0], values[1], values[2], values[3], name)
     ) ;
 }
 

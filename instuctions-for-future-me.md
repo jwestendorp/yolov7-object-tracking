@@ -10,6 +10,8 @@ python detect_and_track_JSON.py --source "./sourceVideos/vj-tophu/braindead-535.
 
 -> this will put data in `./runs/detect/sourceVideos/...etc`
 
+Case video:
+<ul>
 2. render them
 
 ```
@@ -21,6 +23,17 @@ python gpu.py --source "sourceVideos/vj-tophu/braindead-535.mp4"
 ```
 python crop-ffmpeg.py --source "./sourceVideos/vj-tophu/${file.name}
 ```
+</ul>
+
+Case png sequence:
+<ul>
+2. render: 
+
+```
+python cutFrames.py --source "sourceVideos/vj-tophu/braindead-535.mp4"
+```
+-> cropping is already built in
+</ul>
 
 ---
 
@@ -36,7 +49,7 @@ use ./markov/mergeJson.js to merge json chain files
 
 create a  stats file
 ```
-node statsJson.mjs "./runs/detect/sourceVideos/vj-tophu/high-998.mp4/
+node statsJson.mjs "./runs/detect/sourceVideos/vj-tophu/high-998.mp4/"
 ```
 
 <!-- ```

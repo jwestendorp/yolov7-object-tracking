@@ -1,3 +1,4 @@
+import random
 import copy
 import argparse
 import cv2 as cv
@@ -130,46 +131,29 @@ with vidin:
             if (recognitions):
                 coordinates = recognitions.get(str(frameCount))
                 if (coordinates):
-                    # print(frameCount, name, coordinates)
-                    # coordinates = False
-                    cx1, cx2, cy1, cy2 = crop_coords
-                    ix1, ix2, iy1, iy2 = coordinates
 
-                    cropped_frame = frame[cy1:cy2, cx1:cx2]
-                    # w = cx2-cx1
-                    # h = cy2-cy1
-                    # print(crop_coords)
+                    x1, x2, y1, y2 = coordinates
 
-                    RGB = np.zeros(cropped_frame.shape, dtype="uint8")
-                    # print(RGB.shape)
+                    RGB = np.zeros(frame.shape, dtype="uint8")
                     h, w = RGB.shape[:2]
-                    # print(w, h)
 
                     # adding alpha channel
                     # -> make the og frame opaque
-
                     frameAlpha = np.dstack(
-                        (cropped_frame, np.zeros((h, w), dtype=np.uint8)+255))
+                        (frame, np.zeros((h, w), dtype=np.uint8)+255))
                     # -> make the new frame empty
-                    RGBA = np.dstack(
-                        (RGB, np.zeros((h, w), dtype=np.uint8)))
-                    # print("SHAPE")
-                    # print(frameAlpha.shape)
-                    outputFrame = RGBA
 
-                    x1 = ix1 - cx1
-                    x2 = ix2 - cx2
-                    y1 = iy1 - cy1
-                    y2 = ix2 - cy2
+                    outputFrame = np.dstack(
+                        (RGB, np.zeros((h, w), dtype=np.uint8)))
 
                     outputFrame[y1:y2, x1:x2] = frameAlpha[y1:y2, x1:x2]
 
-                    # outputFrame = np.zeros(frame.shape, dtype="uint8")
-                    # outputFrame[y1:y2, x1:x2] = frame[y1:y2, x1:x2]
+                    cx1, cx2, cy1, cy2 = crop_coords
+                    cropped_frame = outputFrame[cy1:cy2, cx1:cx2]
 
-                    joPath = join(path_Output, name, str(frameCount)) + ".png"
-                    # print(joPath)
-                    cv.imwrite(joPath, outputFrame)
+                    pad = join(path_Output, name, str(frameCount)) + ".png"
+
+                    cv.imwrite(pad, cropped_frame)
 
         frameCount += 1
 

@@ -30,7 +30,7 @@ currentFolder = Path().cwd()
 # path_Csv = str(currentFolder / 'runs/detect/video.mp4/bird-0.csv')
 path_Video = str(currentFolder / inputName)
 
-path_Output = str(currentFolder / 'render' / inputName)
+path_Output = str(currentFolder / 'render'/'final' / inputName)
 
 if not path.exists(path_Output):
     makedirs(path_Output)

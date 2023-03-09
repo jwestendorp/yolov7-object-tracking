@@ -22,6 +22,8 @@ class Recognition {
     int index= int(random(0, files.length) ) ;
  
     fileName = files[ index];
+    println(tag+", "+fileName);
+
     frames = getFiles(clipDir + "/" + fileName);
 
   }

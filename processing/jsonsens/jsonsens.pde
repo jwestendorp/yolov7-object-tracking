@@ -25,16 +25,17 @@ void keyReleased() {
 
 void setup() {
 
-  chain = loadJSONObject("chain-toks.json").getJSONObject("chain");
-  stats = loadJSONObject("stats-toks.json");
+  chain = loadJSONObject("chain-final.json").getJSONObject("chain");
+  stats = loadJSONObject("stats-final.json");
   masks = loadJSONObject("masks-braindead.json");
 
   img = loadImage("test.jpg");
-  size(576, 1024,P2D);
+  size(576, 1024, P2D);
 
   fileNamesMap = getFileNames(clipDir);
-  colorMode(RGB, 255, 255, 255, 255) ; 
-
+  JSONObject json = getJsonFromMap(fileNamesMap);
+  saveJSONObject(json, "data/new.json");
+  colorMode(RGB, 255, 255, 255, 255) ;
 }
 
 

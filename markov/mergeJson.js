@@ -1,9 +1,9 @@
 let merge = {};
 let files = [];
 
-for await (const { name } of Deno.readDir("./markov/toks")) {
+for await (const { name } of Deno.readDir("./markov/final")) {
   console.log(name);
-  let json = JSON.parse(await Deno.readTextFile(`./markov/toks/${name}`));
+  let json = JSON.parse(await Deno.readTextFile(`./markov/final/${name}`));
   let chain = json.chain;
 
   files = [...files, name];

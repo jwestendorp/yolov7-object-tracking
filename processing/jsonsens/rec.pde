@@ -8,8 +8,8 @@ void rec() {
     int s = second();  // Values from 0 - 59
     int m = minute();  // Values from 0 - 59
     int h = hour(); 
-    int d = hour(); 
-    int month = hour(); 
+    int d = day(); 
+    int month = month(); 
     String date = str(d)+ "-" + str(month)+ " " + str(h) + "-" + str(m) + "-" + str(s) ;
     println(date);
     videoExport = new VideoExport(this, "/render/"+date+".mov");

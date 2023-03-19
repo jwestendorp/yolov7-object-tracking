@@ -1,0 +1,18 @@
+String[] videoMap = {
+  "1_person;1_truck;1_bottle;", 
+  "2_person;1_cat;", 
+  "1_person;1_motorcycle;1_dog;", 
+  "2_person;1_airplane;9_sports ball;1_bottle;", 
+  "2_person;2_cup;6_sandwich;5_donut;2_cake;1_couch;1_dining table;", 
+  "2_person;2_car;1_tv;", 
+  "1_person;1_bottle;1_cup;1_bowl;1_chair;1_dining table;1_oven;", 
+  "1_person;1_cup;1_cake;", 
+  "8_bottle;2_bowl;", 
+  "3_person;1_bottle;2_cup;1_bowl;2_orange;1_dining table;1_sink;", 
+  "2_person;2_cup;1_tv;1_cell phone;", 
+  "3_person;", 
+  "3_person;", 
+  "1_person;", 
+  "9_person;", 
+  "8_person;", 
+};
